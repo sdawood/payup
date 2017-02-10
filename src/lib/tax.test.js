@@ -38,7 +38,7 @@ describe('tax', () => {
       const annualSalary2 = 500000
       getTaxBrackets()
         .then(brackets => {
-          const result1 = findBracket(brackets, annualSalary)
+          const result1 = findBracket(brackets, annualSalary1)
           const result2 = findBracket(brackets, annualSalary2)
           expect(result2).to.eql(result1)
         })

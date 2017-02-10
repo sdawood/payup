@@ -1,5 +1,7 @@
 import {BRACKETS} from './data/brackets.json'
 
+/* getTaxBracket will typically async query a data source, so it is better
+* to wire up the code to cope with such behavior */
 export const getTaxBrackets = () => {
   return Promise.resolve(BRACKETS)
 }
