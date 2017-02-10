@@ -5,7 +5,7 @@ import {PAYROLL_HEADERS, PAYSLIP_HEADERS} from './model'
 
 describe('payslip', () => {
   describe('#generate', () => {
-    it('return a payslip object with all expected fields populated', () => {
+    it('should return a payslip object with all expected fields populated', () => {
       const inputRecord = {
         firstName: 'a',
         lastName: 'b',
