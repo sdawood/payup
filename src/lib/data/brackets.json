@@ -1,0 +1,9 @@
+{
+  "BRACKETS" : [
+    {"start": 0, "base": 0, "perDollar": 0},
+    {"start": 18201, "base": 0, "perDollar": 0.19},
+    {"start": 37001, "base": 3572, "perDollar": 0.325},
+    {"start": 80001, "base": 17547, "perDollar": 0.37},
+    {"start": 180001, "base": 54547, "perDollar": 0.45}
+  ]
+}

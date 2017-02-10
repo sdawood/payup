@@ -7,6 +7,7 @@
     "coverage": "babel-istanbul cover -x *.test.js _mocha -- -R spec src/**/*.test.js",
     "check-coverage": "babel-istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
     "test": "mocha src/**/*.test.js --compilers js:babel-register",
+    "watch:test": "npm t -- --watch",
     "precommit": "npm test",
     "prebuild": "rimraf dist",
     "build": "babel --copy-files --out-dir dist --ignore *.test.js src"
