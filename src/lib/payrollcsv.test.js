@@ -39,6 +39,62 @@ describe('csv', () => {
           done()
         })
     })
+
+    it('should reject (not pass through) an invalid record with missing fields', (done) => {
+      const testdata = 'David,Rudd,60050,01	March	– 31	March\n'
+      const memReadStream = MemoryStream.createReadStream(testdata)
+      const memWriteStream = MemoryStream.createWriteStream(null, {objectMode: true})
+
+      const csvReadStream = readStream(memReadStream, PAYROLL_HEADERS, (record, next) => {
+        //transform should not be called
+        done(record)
+      })
+    })
+
+    it('should pass through valid records only with expected number of columns', (done) => {
+      const oneValidLine =
+        `David,Rudd\nRyan,Chen,120000,10%,01	March	– 31	March\n`
+      const memReadStream = MemoryStream.createReadStream(oneValidLine)
+      const memWriteStream = MemoryStream.createWriteStream(null, {objectMode: true})
+
+      const csvReadStream = readStream(memReadStream, PAYROLL_HEADERS, (record, next) => {
+        next(null, record)
+      })
+      csvReadStream
+        .pipe(memWriteStream)
+        .on('finish', () => {
+          expect(memWriteStream.queue.length).to.equal(1)
+          expect(memWriteStream.queue[0]).to.include.keys(PAYROLL_HEADERS)
+          expect(memWriteStream.queue[0].firstName).to.equal('Ryan')
+          done()
+        })
+    })
+
+    it('should skip a record through if transform did not call next with data', (done) => {
+      const inputCSV =
+        `David,Rudd,60050,INVALID%,01	March	– 31	March\nRyan,Chen,120000,10%,01	March	– 31	March\n`
+      const memReadStream = MemoryStream.createReadStream(inputCSV)
+      const memWriteStream = MemoryStream.createWriteStream(null, {objectMode: true})
+
+      const csvReadStream = readStream(memReadStream, PAYROLL_HEADERS, (record, next) => {
+        if(Number.isNaN(parseInt(record.superRatePercent.replace('%', '')))) {
+          console.error(`Rejected record: [${JSON.stringify(record)}]`)
+          next(null, null)
+        } else {
+          next(null, record)
+        }
+      })
+      csvReadStream
+        .pipe(memWriteStream)
+        .on('finish', () => {
+          expect(memWriteStream.queue.length).to.equal(1)
+          expect(memWriteStream.queue[0]).to.include.keys(PAYROLL_HEADERS)
+          expect(memWriteStream.queue[0].firstName).to.equal('Ryan')
+          done()
+        })
+    })
+
+
   })
 
   describe('#writeStream', () => {
@@ -110,5 +166,34 @@ describe('csv', () => {
         done(err)
       })
     })
+
+    it('should call next with null for an invalid payroll record: annualSalary', (done) => {
+      const payrollRecord = {
+        firstName: 'a',
+        lastName: 'b',
+        annualSalary: 'X',
+        superRatePercent: '9%',
+        paymentStartDate: '01	March	– 31	March'
+      }
+
+      transformPayrollStream(payrollRecord, (err, payslipRow) => {
+        done(payslipRow)
+      })
+    })
+
+    it('should call next with null for an invalid payroll record: superRatePercent', (done) => {
+      const payrollRecord = {
+        firstName: 'a',
+        lastName: 'b',
+        annualSalary: '0',
+        superRatePercent: 'X%',
+        paymentStartDate: '01	March	– 31	March'
+      }
+
+      transformPayrollStream(payrollRecord, (err, payslipRow) => {
+        done(payslipRow)
+      })
+    })
+
   })
 })
