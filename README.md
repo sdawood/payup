@@ -118,7 +118,7 @@ CSV trasformation is achieved through piping streams together, for example FileR
 This architecture allows for a wide range of scenarios, for instance:
 * Pipe HTTP Request stream to parse an uploaded CSV file on the fly, without buffering the whole file to memory or writing to disk.
 * The above setup can be further extended to allow downloading the result throug piping the a WriteStream with HTTP response.
-* The pipes can be rearranged to add extra validation and/ore transformations
+* The pipes can be rearranged to add extra validation and/or transformations
 
 The above design also allow for flexible testing with MemoryStreams, without the need to rely on csv files to execute test suite.
 
