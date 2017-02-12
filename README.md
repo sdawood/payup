@@ -105,7 +105,7 @@ This architecture allows for a wide range of scenarios, for instance:
 
 The above design also allow for flexible testing with MemoryStreams, without the need to rely on csv files to execute test suite.
 
-\* Currently CSVReadStream is using a transport function implicitly
+\* Currently CSVReadStream is using a transform function implicitly
 
 ### Roadmap
 
