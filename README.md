@@ -91,7 +91,22 @@ To run the tests and gerenate a test coverage report
 ```
 npm run coverage
 ```
+Coverage reports can be sent to a 3rd party service, e.g. [codecov.io](http://codecov.io)
+To sustain coverage levels, ```npm run check-coverage``` can be run on Travis CLI after the tests and fail the build if coverage falls below the thresholds defined in package.json
 
+```
+=============================================================================
+Writing coverage object [/Users/sdawood/tmp/payup/coverage/coverage.json]
+Writing coverage reports at [/Users/sdawood/tmp/payup/coverage]
+=============================================================================
+
+=============================== Coverage summary ===============================
+Statements   : 98.17% ( 214/218 )
+Branches     : 90% ( 9/10 )
+Functions    : 97.18% ( 69/71 )
+Lines        : 98.12% ( 209/213 )
+================================================================================
+```
 ## Discusson and future roadmap
 
 The design, while minimal, relies on Node Streams. This means that the file is not fully loaded in memory, which enables working on large files without working about consuming too much memory on the server.
