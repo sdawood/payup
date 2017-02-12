@@ -81,6 +81,8 @@ You can also pass a space separated list of input file names to -i argument to b
 
 ## Running test and coverage
 
+`husky` development dependency makes available the `precommit` npm script, to only allow a commit after a successful test run.
+
 To run the tests
 
 ```
@@ -114,7 +116,7 @@ The design, while minimal, relies on Node Streams. This means that the file is n
 CSV trasformation is achieved through piping streams together, for example FileReadStream -> CSVReadStream -> * TrasformStream -> CSVWriteStream -> FileWriteStream
 
 This architecture allows for a wide range of scenarios, for instance:
-* Pipe HTTP Request stream to parse an uploaded CSV file on the fly, without buffering the while file to memory or writing to disk.
+* Pipe HTTP Request stream to parse an uploaded CSV file on the fly, without buffering the whole file to memory or writing to disk.
 * The above setup can be further extended to allow downloading the result throug piping the a WriteStream with HTTP response.
 * The pipes can be rearranged to add extra validation and/ore transformations
 
