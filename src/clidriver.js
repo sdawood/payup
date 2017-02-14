@@ -1,23 +1,10 @@
 import fs from 'fs'
 import path from 'path'
-import {PAYROLL_HEADERS} from './lib/model'
-import {readStream, transformPayrollStream, writeStream} from './lib/payrollcsv'
+import {processFile} from './lib/payrollcsv'
 
 const outFilepath = (outDir, inFilepath) => {
   const filename = path.basename(inFilepath)
   return path.join(outDir, filename)
-}
-
-const processFile = (inFilepath, outFilepath) => {
-  console.log(`Processing file: ${inFilepath} -> ${outFilepath}`)
-  const fileReadStream = fs.createReadStream(inFilepath)
-  const fileWriteStream = fs.createWriteStream(outFilepath)
-  writeStream(
-    readStream(
-      fileReadStream, PAYROLL_HEADERS, transformPayrollStream
-    ),
-    fileWriteStream
-  )
 }
 
 export const main = ({input: inFiles, outDir, force}) => {
