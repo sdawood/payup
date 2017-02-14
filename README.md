@@ -61,7 +61,7 @@ copyright 2017, License: MIT
 
 ## Example
 
-In this example we use the included sample-input.csv file, we also use the --force flag to force generate the output directory if no existing
+In this example we use the included sample-input.csv file, we also use the --force flag to force creation the output directory if not existing
 
 ```
 $ node dist/index.js -i dist/data/sample-input.csv -o ./payslip -f
@@ -120,7 +120,7 @@ This architecture allows for a wide range of scenarios, for instance:
 * The above setup can be further extended to allow downloading the result through piping the a WriteStream with HTTP response.
 * The pipes can be rearranged to add extra validation and/or transformations
 
-The above design also allow for flexible testing with MemoryStreams, without the need to rely on csv files to execute test suite.
+The above design also allows for flexible testing with MemoryStreams, without the need to rely on csv files to execute test suite.
 
 \* Currently CSVReadStream is using a transform function implicitly
 
