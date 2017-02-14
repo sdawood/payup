@@ -124,6 +124,24 @@ The above design also allows for flexible testing with MemoryStreams, without th
 
 \* Currently CSVReadStream is using a transform function implicitly
 
+#### Putting it all together
+Peaking under the hood, there is one function that glues everything together
+
+```
+// /lib/payrollcsv.js
+
+export const processFile = (inFilepath, outFilepath) => {
+  console.log(`Processing file: ${inFilepath} -> ${outFilepath}`)
+  const fileReadStream = fs.createReadStream(inFilepath)
+  const fileWriteStream = fs.createWriteStream(outFilepath)
+  readStream(fileReadStream, PAYROLL_HEADERS)
+    .pipe(transformStream)
+    .pipe(writeStream())
+    .pipe(fileWriteStream)
+}
+```
+Thanks to streams, the data flow is self explanatory
+
 ### Roadmap
 
 For backlog, check 'enhancement' [issues](https://github.com/sdawood/payup/issues) in this repo
