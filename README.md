@@ -113,7 +113,7 @@ Lines        : 98.12% ( 209/213 )
 
 The design, while minimal, relies on Node Streams. This means that the file is not fully loaded in memory, which enables working on large files without working about consuming too much memory on the server.
 
-CSV transformation is achieved through piping streams together, for example FileReadStream -> CSVReadStream -> * TransformStream -> CSVWriteStream -> FileWriteStream
+CSV transformation is achieved through piping streams together, for example FileReadStream -> CSVReadStream ->  TransformStream -> CSVWriteStream -> FileWriteStream
 
 This architecture allows for a wide range of scenarios, for instance:
 * Pipe HTTP Request stream to parse an uploaded CSV file on the fly, without buffering the whole file to memory or writing to disk.
@@ -121,8 +121,6 @@ This architecture allows for a wide range of scenarios, for instance:
 * The pipes can be rearranged to add extra validation and/or transformations
 
 The above design also allows for flexible testing with MemoryStreams, without the need to rely on csv files to execute test suite.
-
-\* Currently CSVReadStream is using a transform function implicitly
 
 #### Putting it all together
 Peaking under the hood, there is one function that glues everything together
