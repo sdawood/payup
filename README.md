@@ -61,7 +61,7 @@ copyright 2017, License: MIT
 
 ## Example
 
-In this example we use the included sample-input.csv file, we also use the --force flag to force generate the output directory if no existing
+In this example we use the included sample-input.csv file, we also use the --force flag to force creation the output directory if not existing
 
 ```
 $ node dist/index.js -i dist/data/sample-input.csv -o ./payslip -f
@@ -113,16 +113,32 @@ Lines        : 98.12% ( 209/213 )
 
 The design, while minimal, relies on Node Streams. This means that the file is not fully loaded in memory, which enables working on large files without working about consuming too much memory on the server.
 
-CSV transformation is achieved through piping streams together, for example FileReadStream -> CSVReadStream -> * TransformStream -> CSVWriteStream -> FileWriteStream
+CSV transformation is achieved through piping streams together, for example FileReadStream -> CSVReadStream ->  TransformStream -> CSVWriteStream -> FileWriteStream
 
 This architecture allows for a wide range of scenarios, for instance:
 * Pipe HTTP Request stream to parse an uploaded CSV file on the fly, without buffering the whole file to memory or writing to disk.
 * The above setup can be further extended to allow downloading the result through piping the a WriteStream with HTTP response.
 * The pipes can be rearranged to add extra validation and/or transformations
 
-The above design also allow for flexible testing with MemoryStreams, without the need to rely on csv files to execute test suite.
+The above design also allows for flexible testing with MemoryStreams, without the need to rely on csv files to execute test suite.
 
-\* Currently CSVReadStream is using a transform function implicitly
+#### Putting it all together
+Peaking under the hood, there is one function that glues everything together
+
+```
+// /lib/payrollcsv.js
+
+export const processFile = (inFilepath, outFilepath) => {
+  console.log(`Processing file: ${inFilepath} -> ${outFilepath}`)
+  const fileReadStream = fs.createReadStream(inFilepath)
+  const fileWriteStream = fs.createWriteStream(outFilepath)
+  readStream(fileReadStream, PAYROLL_HEADERS)
+    .pipe(transformStream)
+    .pipe(writeStream())
+    .pipe(fileWriteStream)
+}
+```
+Thanks to streams, the data flow is self explanatory
 
 ### Roadmap
 
