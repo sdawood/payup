@@ -3,37 +3,43 @@ import {findBracket, getTaxBrackets, calculateTax} from './tax'
 
 describe('tax', () => {
   describe('#findBracket', () => {
-    it('should return bracket for a given income value', () => {
+    it('should return bracket for a given income value', (done) => {
       const annualSalary = 100000
       const expected = {start: 80001, base: 17547, perDollar: 0.37}
       getTaxBrackets()
         .then(brackets => {
           const result = findBracket(brackets, annualSalary)
           expect(result).to.eql(expected)
+          done()
         })
+        .catch(done)
     })
 
-    it('should accept negative value', () => {
+    it('should accept negative value', (done) => {
       const annualSalary = -1
       const expected = {start: 0, base: 0, perDollar: 0}
       getTaxBrackets()
         .then(brackets => {
           const result = findBracket(brackets, annualSalary)
           expect(result).to.eql(expected)
+          done()
         })
+        .catch(done)
     })
 
-    it('should accept values greater than brackets ceiling', () => {
+    it('should accept values greater than brackets ceiling', (done) => {
       const annualSalary = 180002
       const expected = {start: 180001, base: 54547, perDollar: 0.45}
       getTaxBrackets()
         .then(brackets => {
           const result = findBracket(brackets, annualSalary)
           expect(result).to.eql(expected)
+          done()
         })
+        .catch(done)
     })
 
-    it('should return same bracket for values higher than ceiling', () => {
+    it('should return same bracket for values higher than ceiling', (done) => {
       const annualSalary1 = 200000
       const annualSalary2 = 500000
       getTaxBrackets()
@@ -41,17 +47,21 @@ describe('tax', () => {
           const result1 = findBracket(brackets, annualSalary1)
           const result2 = findBracket(brackets, annualSalary2)
           expect(result2).to.eql(result1)
+          done()
         })
+        .catch(done)
     })
 
-    it('should not limit ambition!', () => {
+    it('should not limit ambition!', (done) => {
       const annualSalary = Infinity
       const expected = {start: 180001, base: 54547, perDollar: 0.45}
       getTaxBrackets()
         .then(brackets => {
           const result = findBracket(brackets, annualSalary)
           expect(result).to.eql(expected)
+          done()
         })
+        .catch(done)
     })
   })
 

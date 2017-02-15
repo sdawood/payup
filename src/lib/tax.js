@@ -7,13 +7,9 @@ export const getTaxBrackets = () => {
 }
 
 export const findBracket = (brackets, annualSalary) => {
-  let i
-  for (i = 0; i < brackets.length - 1; i++) {
-    if (annualSalary < brackets[i+1].start) {
-      break
-    }
-  }
-  return brackets[i]
+  return brackets.reduce((acc, bracket) => {
+    return annualSalary > bracket.start ? bracket : acc
+  })
 }
 
 export const calculateTax = (annualSalary, {start, base, perDollar}) => {
